@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedExtract</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            padding: 20px;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+            background-color: palegoldenrod; /* Set background color for main */
+        }
+
+        button {
+            margin-top: 20px;
+        }
+
+        .page {
+            display: none; /* Hide all pages by default */
+        }
+
+        .active {
+            display: block; /* Show only the active page */
+        }
+
+        #header {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="header">MedExtract</h1>
+    </header>
+
+    <div id="uploadPage" class="page active">
+        <main>
+            <h2>Upload Medical Reports</h2>
+            <form id="uploadForm">
+                <label for="reportType">Select Report Type:</label>
+                <select id="reportType">
+                    <option value="jpeg">JPEG</option>
+                    <option value="doc">DOC FILE</option>
+                    <option value="pdf">PDF FILE</option>
+                </select>
+                <input type="file" id="reportUpload" accept=".jpeg, .doc, .pdf">
+                <button type="button" onclick="uploadReport()">Upload</button>
+            </form>
+        </main>
+    </div>
+
+    <div id="allocationPage" class="page">
+        <main>
+            <h2>Allocated Medicines</h2>
+            <div id="medicinesList">
+                <!-- Medicine items will be dynamically generated here -->
+            </div>
+            <button onclick="nextPage()">Next</button>
+        </main>
+    </div>
+
+    <div id="paymentPage" class="page">
+        <main>
+            <h2>Payment Details</h2>
+            <div id="totalCost"></div>
+            <form id="paymentForm">
+                <label for="deliveryAddress">Delivery Address:</label>
+                <input type="text" id="deliveryAddress" required>
+                <label for="buyerName">Buyer Name:</label>
+                <input type="text" id="buyerName" required>
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" required>
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod">
+                    <option value="creditCard">Pay via Credit Card</option>
+                    <option value="googlePay">Pay via Google Pay</option>
+                    <option value="cashOnDelivery">Pay Cash on Delivery</option>
+                </select>
+                <button type="button" onclick="processPayment()">Pay</button>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        function uploadReport() {
+            const reportType = document.getElementById('reportType').value;
+            const reportFile = document.getElementById('reportUpload').files[0];
+            
+            if (reportFile) {
+                alert("Uploaded ${reportType} report successfully!");
+                nextPage(); // Move to the next page
+            } else {
+                alert("Please select a file to upload.");
+            }
+        }
+
+        function nextPage() {
+            const uploadPage = document.getElementById('uploadPage');
+            const allocationPage = document.getElementById('allocationPage');
+            const paymentPage = document.getElementById('paymentPage');
+
+            if (uploadPage.classList.contains('active')) {
+                uploadPage.classList.remove('active');
+                allocationPage.classList.add('active');
+                // Here you would dynamically generate the medicine list
+                document.getElementById('medicinesList').innerHTML = `
+                    <div>Medicine A</div>
+                    <div style="color: green;">Medicine B <strong>(CURRENTLY UNAVAILABLE)</strong></div>
+                    <div>Medicine C</div>
+                `;
+            } else if (allocationPage.classList.contains('active')) {
+                allocationPage.classList.remove('active');
+                paymentPage.classList.add('active');
+                // Calculate total cost (dummy value for demonstration)
+                document.getElementById('totalCost').innerText = "TotalCost";}}
